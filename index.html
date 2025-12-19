@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Community Loss and Hope Index - Philadelphia</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Crimson Text', Georgia, serif; }
+    #root { min-height: 100vh; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    const { useState, useMemo } = React;
+
+    const lossData = [
+      {"ZIP_CODE":"19132","neighborhood":"Strawberry Mansion","lat":40.001,"lon":-75.17,"community_loss_score":0.9418610094,"early_death_rate":0.0071774117,"overdose_rate":0.0016441648,"homicide_rate":0.000853701,"non_fatal_rate":0.0029089069,"hospital_rate":0.0049641129,"foster_rate":0.0094539476},
+      {"ZIP_CODE":"19133","neighborhood":"Fairhill","lat":39.996,"lon":-75.128,"community_loss_score":0.7206270879,"early_death_rate":0.005721180042,"overdose_rate":0.0020627384,"homicide_rate":0.0005448743,"non_fatal_rate":0.0026076127,"hospital_rate":0.003152487,"foster_rate":0.0061492956},
+      {"ZIP_CODE":"19134","neighborhood":"Kensington","lat":39.994,"lon":-75.105,"community_loss_score":0.6632535696,"early_death_rate":0.0055859031,"overdose_rate":0.0020969163,"homicide_rate":0.0003348018,"non_fatal_rate":0.0023788546,"hospital_rate":0.0037180617,"foster_rate":0.0056563877},
+      {"ZIP_CODE":"19140","neighborhood":"Nicetown-Tioga","lat":40.013,"lon":-75.143,"community_loss_score":0.6086569568,"early_death_rate":0.0046682412,"overdose_rate":0.0011624474,"homicide_rate":0.0005166433,"non_fatal_rate":0.00178979999,"hospital_rate":0.0039301793,"foster_rate":0.0075097793},
+      {"ZIP_CODE":"19139","neighborhood":"Cobbs Creek","lat":39.962,"lon":-75.233,"community_loss_score":0.5521636316,"early_death_rate":0.0041686277,"overdose_rate":0.001008539,"homicide_rate":0.0005378874,"non_fatal_rate":0.0018377821,"hospital_rate":0.0039669199,"foster_rate":0.0054012864},
+      {"ZIP_CODE":"19121","neighborhood":"North Philadelphia","lat":39.981,"lon":-75.172,"community_loss_score":0.5062194306,"early_death_rate":0.0037198691,"overdose_rate":0.0008431703,"homicide_rate":0.0004711834,"non_fatal_rate":0.0019343319,"hospital_rate":0.0029014979,"foster_rate":0.007018153},
+      {"ZIP_CODE":"19102","neighborhood":"Center City","lat":39.9526,"lon":-75.1652,"community_loss_score":0.4467569988,"early_death_rate":0.0,"overdose_rate":0.0,"homicide_rate":0.0,"non_fatal_rate":0.0006727212,"hospital_rate":0.0028590649,"foster_rate":0.006390851},
+      {"ZIP_CODE":"19131","neighborhood":"Overbrook","lat":39.99,"lon":-75.226,"community_loss_score":0.4110110867,"early_death_rate":0.0037054399,"overdose_rate":0.0004687605,"homicide_rate":0.0004910824,"non_fatal_rate":0.0012723498,"hospital_rate":0.003348289,"foster_rate":0.0047099266},
+      {"ZIP_CODE":"19107","neighborhood":"Washington Square","lat":39.951,"lon":-75.158,"community_loss_score":0.3975963149,"early_death_rate":0.0023904897,"overdose_rate":0.0009045096,"homicide_rate":0.0,"non_fatal_rate":0.0002584313,"hospital_rate":0.0054270578,"foster_rate":0.0031657837},
+      {"ZIP_CODE":"19126","neighborhood":"Oak Lane","lat":40.054,"lon":-75.138,"community_loss_score":0.3960491809,"early_death_rate":0.0034817352,"overdose_rate":0.0,"homicide_rate":0.0,"non_fatal_rate":0.0006849315,"hospital_rate":0.0032534247,"foster_rate":0.0038812785},
+      {"ZIP_CODE":"19141","neighborhood":"Logan","lat":40.037,"lon":-75.147,"community_loss_score":0.3903166604,"early_death_rate":0.0035764956,"overdose_rate":0.0008276188,"homicide_rate":0.000325136,"non_fatal_rate":0.0012414282,"hospital_rate":0.0026010877,"foster_rate":0.0058228896},
+      {"ZIP_CODE":"19124","neighborhood":"Frankford","lat":40.022,"lon":-75.093,"community_loss_score":0.3879116266,"early_death_rate":0.0039003434,"overdose_rate":0.0008620324,"homicide_rate":0.000395687,"non_fatal_rate":0.0011305343,"hospital_rate":0.0028687308,"foster_rate":0.0039286068},
+      {"ZIP_CODE":"19138","neighborhood":"Germantown","lat":40.056,"lon":-75.159,"community_loss_score":0.3825246968,"early_death_rate":0.0037495668,"overdose_rate":0.0006301793,"homicide_rate":0.0004096165,"non_fatal_rate":0.0008192331,"hospital_rate":0.0027727889,"foster_rate":0.0059551943},
+      {"ZIP_CODE":"19143","neighborhood":"Southwest Philly","lat":39.942,"lon":-75.228,"community_loss_score":0.3742067972,"early_death_rate":0.0035358303,"overdose_rate":0.0005599731,"homicide_rate":0.0004319793,"non_fatal_rate":0.0010079516,"hospital_rate":0.0034398349,"foster_rate":0.0039838088},
+      {"ZIP_CODE":"19153","neighborhood":"Eastwick","lat":39.892,"lon":-75.238,"community_loss_score":0.371730704,"early_death_rate":0.0024201355,"overdose_rate":0.0,"homicide_rate":0.0,"non_fatal_rate":0.0010487254,"hospital_rate":0.0033075186,"foster_rate":0.0032268474},
+      {"ZIP_CODE":"19144","neighborhood":"Germantown","lat":40.034,"lon":-75.176,"community_loss_score":0.3594193768,"early_death_rate":0.0036669276,"overdose_rate":0.0008652301,"homicide_rate":0.0003090108,"non_fatal_rate":0.0006592229,"hospital_rate":0.0029665032,"foster_rate":0.005603395},
+      {"ZIP_CODE":"19122","neighborhood":"Northern Liberties","lat":39.975,"lon":-75.145,"community_loss_score":0.3462008628,"early_death_rate":0.0023443816,"overdose_rate":0.0006467259,"homicide_rate":0.0,"non_fatal_rate":0.0007679871,"hospital_rate":0.0047291835,"foster_rate":0.0025869038},
+      {"ZIP_CODE":"19142","neighborhood":"Eastwick","lat":39.923,"lon":-75.233,"community_loss_score":0.3408082199,"early_death_rate":0.003365004,"overdose_rate":0.0007257852,"homicide_rate":0.0003628926,"non_fatal_rate":0.0007587754,"hospital_rate":0.0030021114,"foster_rate":0.0042227501},
+      {"ZIP_CODE":"19120","neighborhood":"Olney","lat":40.034,"lon":-75.119,"community_loss_score":0.3399509755,"early_death_rate":0.0031581421,"overdose_rate":0.0006022504,"homicide_rate":0.0003231587,"non_fatal_rate":0.0010429214,"hospital_rate":0.0020123975,"foster_rate":0.0031287641},
+      {"ZIP_CODE":"19104","neighborhood":"University City","lat":39.959,"lon":-75.201,"community_loss_score":0.3309389406,"early_death_rate":0.0016711353,"overdose_rate":0.0003856466,"homicide_rate":0.0002203695,"non_fatal_rate":0.0006060161,"hospital_rate":0.0027178903,"foster_rate":0.004444118},
+      {"ZIP_CODE":"19151","neighborhood":"Overbrook Park","lat":39.978,"lon":-75.256,"community_loss_score":0.3025555553,"early_death_rate":0.0029752869,"overdose_rate":0.0004554011,"homicide_rate":0.0,"non_fatal_rate":0.0003946809,"hospital_rate":0.002155565,"foster_rate":0.0036128484},
+      {"ZIP_CODE":"19129","neighborhood":"East Falls","lat":40.014,"lon":-75.187,"community_loss_score":0.2893048973,"early_death_rate":0.002031832,"overdose_rate":0.0,"homicide_rate":0.0,"non_fatal_rate":0.0011005757,"hospital_rate":0.0026244497,"foster_rate":0.0028784287},
+      {"ZIP_CODE":"19137","neighborhood":"Bridesburg","lat":40.002,"lon":-75.064,"community_loss_score":0.2784168604,"early_death_rate":0.0034035043,"overdose_rate":0.0,"homicide_rate":0.0,"non_fatal_rate":0.0003781671,"hospital_rate":0.0027732258,"foster_rate":0.0030253372},
+      {"ZIP_CODE":"19123","neighborhood":"Spring Garden","lat":39.965,"lon":-75.152,"community_loss_score":0.2705019566,"early_death_rate":0.00238009,"overdose_rate":0.0,"homicide_rate":0.0,"non_fatal_rate":0.0010348218,"hospital_rate":0.0026387955,"foster_rate":0.0032079474},
+      {"ZIP_CODE":"19135","neighborhood":"Mayfair","lat":40.027,"lon":-75.048,"community_loss_score":0.2608093424,"early_death_rate":0.0031839692,"overdose_rate":0.0007010574,"homicide_rate":0.0002921073,"non_fatal_rate":0.0005257931,"hospital_rate":0.0021908045,"foster_rate":0.0035637086},
+      {"ZIP_CODE":"19145","neighborhood":"South Philadelphia","lat":39.917,"lon":-75.19,"community_loss_score":0.2510009977,"early_death_rate":0.0028867419,"overdose_rate":0.0008846467,"homicide_rate":0.0,"non_fatal_rate":0.0007216855,"hospital_rate":0.0032126644,"foster_rate":0.001839134},
+      {"ZIP_CODE":"19150","neighborhood":"Cedarbrook","lat":40.072,"lon":-75.166,"community_loss_score":0.2363785949,"early_death_rate":0.0030955814,"overdose_rate":0.0006784836,"homicide_rate":0.0,"non_fatal_rate":0.0002120261,"hospital_rate":0.0027139344,"foster_rate":0.0019506403},
+      {"ZIP_CODE":"19125","neighborhood":"Fishtown","lat":39.976,"lon":-75.128,"community_loss_score":0.2294820638,"early_death_rate":0.0023686392,"overdose_rate":0.0005921598,"homicide_rate":0.0,"non_fatal_rate":0.0003158186,"hospital_rate":0.0036319135,"foster_rate":0.0014211835},
+      {"ZIP_CODE":"19111","neighborhood":"Fox Chase","lat":40.064,"lon":-75.078,"community_loss_score":0.2236765527,"early_death_rate":0.0026739187,"overdose_rate":0.0005317452,"homicide_rate":0.0002126981,"non_fatal_rate":0.000273469,"hospital_rate":0.0018535118,"foster_rate":0.001139454},
+      {"ZIP_CODE":"19136","neighborhood":"Holmesburg","lat":40.049,"lon":-75.027,"community_loss_score":0.2197308085,"early_death_rate":0.003398518,"overdose_rate":0.0008635579,"homicide_rate":0.0,"non_fatal_rate":0.0003899939,"hospital_rate":0.0024792468,"foster_rate":0.0018942559},
+      {"ZIP_CODE":"19149","neighborhood":"Rhawnhurst","lat":40.039,"lon":-75.068,"community_loss_score":0.2121379481,"early_death_rate":0.002219271,"overdose_rate":0.0003669661,"homicide_rate":0.0,"non_fatal_rate":0.0002795932,"hospital_rate":0.0016950337,"foster_rate":0.0022542201},
+      {"ZIP_CODE":"19148","neighborhood":"Passyunk","lat":39.915,"lon":-75.156,"community_loss_score":0.1999693055,"early_death_rate":0.0031510329,"overdose_rate":0.0008271461,"homicide_rate":0.0,"non_fatal_rate":0.0005120429,"hospital_rate":0.0023829687,"foster_rate":0.0009453099},
+      {"ZIP_CODE":"19127","neighborhood":"Manayunk","lat":40.028,"lon":-75.228,"community_loss_score":0.1937839037,"early_death_rate":0.0,"overdose_rate":0.0,"homicide_rate":0.0,"non_fatal_rate":0.0005175091,"hospital_rate":0.0020700362,"foster_rate":0.0022425392},
+      {"ZIP_CODE":"19146","neighborhood":"Graduate Hospital","lat":39.938,"lon":-75.179,"community_loss_score":0.1909621867,"early_death_rate":0.0022769005,"overdose_rate":0.0006365528,"homicide_rate":0.000244828,"non_fatal_rate":0.000367242,"hospital_rate":0.0022279349,"foster_rate":0.0016893133},
+      {"ZIP_CODE":"19114","neighborhood":"Torresdale","lat":40.065,"lon":-75.02,"community_loss_score":0.1689440665,"early_death_rate":0.0031218821,"overdose_rate":0.000547134,"homicide_rate":0.0,"non_fatal_rate":3.21844e-05,"hospital_rate":0.0017057707,"foster_rate":0.0011264523},
+      {"ZIP_CODE":"19152","neighborhood":"Bustleton","lat":40.062,"lon":-75.055,"community_loss_score":0.1485765285,"early_death_rate":0.0019681718,"overdose_rate":0.0004498679,"homicide_rate":0.0,"non_fatal_rate":0.0002811674,"hospital_rate":0.0019962886,"foster_rate":0.0005342181},
+      {"ZIP_CODE":"19119","neighborhood":"Mt. Airy","lat":40.054,"lon":-75.189,"community_loss_score":0.1459932648,"early_death_rate":0.0017503326,"overdose_rate":0.0004200798,"homicide_rate":0.0,"non_fatal_rate":0.0001750333,"hospital_rate":0.0015402927,"foster_rate":0.0015752993},
+      {"ZIP_CODE":"19116","neighborhood":"Somerton","lat":40.115,"lon":-75.015,"community_loss_score":0.1432553765,"early_death_rate":0.0024535472,"overdose_rate":0.0003291344,"homicide_rate":0.0,"non_fatal_rate":8.97639e-05,"hospital_rate":0.0016456719,"foster_rate":0.0004787409},
+      {"ZIP_CODE":"19128","neighborhood":"Roxborough","lat":40.048,"lon":-75.227,"community_loss_score":0.1409299564,"early_death_rate":0.0015127776,"overdose_rate":0.0003511805,"homicide_rate":0.0,"non_fatal_rate":2.70139e-05,"hospital_rate":0.0016208331,"foster_rate":0.0017829164},
+      {"ZIP_CODE":"19115","neighborhood":"Bustleton","lat":40.09,"lon":-75.042,"community_loss_score":0.1379355693,"early_death_rate":0.0020151424,"overdose_rate":0.0,"homicide_rate":0.0,"non_fatal_rate":5.75755e-05,"hospital_rate":0.0017848404,"foster_rate":0.0006045427},
+      {"ZIP_CODE":"19154","neighborhood":"Northeast Philly","lat":40.091,"lon":-74.983,"community_loss_score":0.1330131474,"early_death_rate":0.002523178,"overdose_rate":0.0002933928,"homicide_rate":0.0,"non_fatal_rate":0.0001173571,"hospital_rate":0.0016136604,"foster_rate":0.0007041427},
+      {"ZIP_CODE":"19118","neighborhood":"Chestnut Hill","lat":40.075,"lon":-75.21,"community_loss_score":0.098542568,"early_death_rate":0.001270648,"overdose_rate":0.0,"homicide_rate":0.0,"non_fatal_rate":0.0,"hospital_rate":0.0,"foster_rate":0.0},
+      {"ZIP_CODE":"19147","neighborhood":"Bella Vista","lat":39.935,"lon":-75.154,"community_loss_score":0.0981454253,"early_death_rate":0.0013936563,"overdose_rate":0.0004129352,"homicide_rate":0.0,"non_fatal_rate":0.0003355098,"hospital_rate":0.0014710816,"foster_rate":0.0008000619},
+      {"ZIP_CODE":"19130","neighborhood":"Fairmount","lat":39.968,"lon":-75.176,"community_loss_score":0.0893342903,"early_death_rate":0.0011504076,"overdose_rate":0.0005259006,"homicide_rate":0.0,"non_fatal_rate":0.0002300815,"hospital_rate":0.0008874573,"foster_rate":0.0016105706},
+      {"ZIP_CODE":"19106","neighborhood":"Old City","lat":39.948,"lon":-75.145,"community_loss_score":0.0359693698,"early_death_rate":0.0007627765,"overdose_rate":0.0,"homicide_rate":0.0,"non_fatal_rate":0.0002773733,"hospital_rate":0.0006934332,"foster_rate":0.0},
+      {"ZIP_CODE":"19103","neighborhood":"Center City West","lat":39.954,"lon":-75.173,"community_loss_score":0.0350777088,"early_death_rate":0.0006249512,"overdose_rate":0.0,"homicide_rate":0.0,"non_fatal_rate":3.90594e-05,"hospital_rate":0.0011717835,"foster_rate":0.0}
+    ];
+
+    const getColor = (score) => {
+      if (score >= 0.8) return '#67000d';
+      if (score >= 0.6) return '#a50f15';
+      if (score >= 0.5) return '#cb181d';
+      if (score >= 0.4) return '#ef3b2c';
+      if (score >= 0.3) return '#fb6a4a';
+      if (score >= 0.2) return '#fc9272';
+      if (score >= 0.1) return '#fcbba1';
+      return '#fee5d9';
+    };
+
+    const latToY = (lat) => ((40.15 - lat) / 0.3) * 500;
+    const lonToX = (lon) => ((lon + 75.3) / 0.35) * 600;
+
+    function App() {
+      const [hoveredZip, setHoveredZip] = useState(null);
+      const [selectedIndicator, setSelectedIndicator] = useState('community_loss_score');
+      
+      const indicators = [
+        { key: 'community_loss_score', label: 'Community Loss Index' },
+        { key: 'early_death_rate', label: 'Early Death Rate' },
+        { key: 'overdose_rate', label: 'Overdose Rate' },
+        { key: 'homicide_rate', label: 'Homicide Rate' },
+        { key: 'non_fatal_rate', label: 'Non-Fatal Shootings' },
+        { key: 'hospital_rate', label: 'Hospitalization Rate' },
+        { key: 'foster_rate', label: 'Foster Care Rate' },
+      ];
+
+      const maxValue = useMemo(() => Math.max(...lossData.map(d => d[selectedIndicator] || 0)), [selectedIndicator]);
+      const getNormalizedColor = (value) => getColor(maxValue > 0 ? value / maxValue : 0);
+      const formatRate = (rate) => (!rate || rate === 0) ? 'N/A' : (rate * 1000).toFixed(2) + ' per 1,000';
+      const hoveredData = lossData.find(d => d.ZIP_CODE === hoveredZip);
+
+      return (
+        <div style={{minHeight:'100vh',background:'linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f0f23 100%)',padding:'24px',fontFamily:"'Crimson Text',Georgia,serif",color:'#e8e6e3'}}>
+          <div style={{maxWidth:'1200px',margin:'0 auto'}}>
+            <div style={{marginBottom:'8px',opacity:0.7,fontSize:'12px',letterSpacing:'3px',textTransform:'uppercase'}}>Wealth + Work Futures Lab | Community Loss and Hope Index</div>
+            <h1 style={{fontSize:'42px',fontWeight:'400',margin:'0 0 8px 0',background:'linear-gradient(90deg,#f5f5f5 0%,#d4a574 100%)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent'}}>Where Loss Lives</h1>
+            <p style={{fontSize:'18px',opacity:0.8,margin:'0 0 32px 0',maxWidth:'600px',lineHeight:1.6}}>Mapping community grief in Philadelphia — because loss isn't random, it's place-based.<span style={{display:'block',marginTop:'8px',fontStyle:'italic',opacity:0.7}}>"Grief as Sacred Data: Loss and Hope as Design"</span></p>
+            
+            <div style={{marginBottom:'24px'}}>
+              <div style={{fontSize:'12px',opacity:0.6,marginBottom:'8px',letterSpacing:'1px'}}>SELECT INDICATOR</div>
+              <div style={{display:'flex',flexWrap:'wrap',gap:'8px'}}>
+                {indicators.map(ind => (
+                  <button key={ind.key} onClick={() => setSelectedIndicator(ind.key)} style={{padding:'8px 16px',borderRadius:'4px',border:selectedIndicator===ind.key?'2px solid #d4a574':'1px solid rgba(255,255,255,0.2)',background:selectedIndicator===ind.key?'rgba(212,165,116,0.2)':'rgba(255,255,255,0.05)',color:selectedIndicator===ind.key?'#d4a574':'#e8e6e3',cursor:'pointer',fontSize:'13px',fontFamily:'inherit'}}>{ind.label}</button>
+                ))}
+              </div>
+            </div>
+
+            <div style={{display:'grid',gridTemplateColumns:'1fr 320px',gap:'32px'}}>
+              <div style={{background:'rgba(0,0,0,0.3)',borderRadius:'12px',padding:'24px',border:'1px solid rgba(255,255,255,0.1)'}}>
+                <svg viewBox="0 0 600 500" style={{width:'100%',height:'auto'}}>
+                  <rect x="0" y="0" width="600" height="500" fill="#0d1117" rx="8"/>
+                  {[0,1,2,3,4,5].map(i => <line key={`h${i}`} x1="0" y1={i*100} x2="600" y2={i*100} stroke="rgba(255,255,255,0.05)" strokeWidth="1"/>)}
+                  {[0,1,2,3,4,5,6].map(i => <line key={`v${i}`} x1={i*100} y1="0" x2={i*100} y2="500" stroke="rgba(255,255,255,0.05)" strokeWidth="1"/>)}
+                  {lossData.map((d) => {
+                    const value = d[selectedIndicator] || 0;
+                    const x = lonToX(d.lon), y = latToY(d.lat);
+                    const radius = selectedIndicator==='community_loss_score' ? 8+(value*25) : 8+((value/maxValue)*25);
+                    const isHovered = hoveredZip === d.ZIP_CODE;
+                    return (
+                      <g key={d.ZIP_CODE}>
+                        {value > (maxValue*0.5) && <circle cx={x} cy={y} r={radius+10} fill={getNormalizedColor(value)} opacity={0.2} style={{filter:'blur(8px)'}}/>}
+                        <circle cx={x} cy={y} r={isHovered?radius+4:radius} fill={getNormalizedColor(value)} stroke={isHovered?'#fff':'rgba(255,255,255,0.3)'} strokeWidth={isHovered?3:1} style={{cursor:'pointer'}} onMouseEnter={() => setHoveredZip(d.ZIP_CODE)} onMouseLeave={() => setHoveredZip(null)}/>
+                        {(value > maxValue*0.6 || isHovered) && <text x={x} y={y-radius-8} textAnchor="middle" fill="#fff" fontSize="11" fontWeight="600" style={{pointerEvents:'none'}}>{d.neighborhood}</text>}
+                      </g>
+                    );
+                  })}
+                  <text x="16" y="30" fill="rgba(255,255,255,0.5)" fontSize="12" fontFamily="monospace">Philadelphia ZIP Codes | 2023 Data</text>
+                </svg>
+                <div style={{marginTop:'16px',display:'flex',alignItems:'center',gap:'16px'}}>
+                  <span style={{fontSize:'12px',opacity:0.6}}>LOW</span>
+                  <div style={{flex:1,height:'12px',borderRadius:'6px',background:'linear-gradient(90deg,#fee5d9,#fcbba1,#fc9272,#fb6a4a,#ef3b2c,#cb181d,#a50f15,#67000d)'}}/>
+                  <span style={{fontSize:'12px',opacity:0.6}}>HIGH</span>
+                </div>
+              </div>
+
+              <div style={{background:'rgba(0,0,0,0.3)',borderRadius:'12px',padding:'24px',border:'1px solid rgba(255,255,255,0.1)'}}>
+                {hoveredData ? (
+                  <>
+                    <div style={{fontSize:'11px',opacity:0.5,letterSpacing:'2px',marginBottom:'4px'}}>ZIP CODE</div>
+                    <div style={{fontSize:'32px',fontWeight:'300',color:'#d4a574'}}>{hoveredData.ZIP_CODE}</div>
+                    <div style={{fontSize:'18px',marginBottom:'24px',opacity:0.9}}>{hoveredData.neighborhood}</div>
+                    <div style={{background:getNormalizedColor(hoveredData[selectedIndicator]||0),padding:'16px',borderRadius:'8px',marginBottom:'24px'}}>
+                      <div style={{fontSize:'11px',opacity:0.8,letterSpacing:'1px'}}>{indicators.find(i=>i.key===selectedIndicator)?.label.toUpperCase()}</div>
+                      <div style={{fontSize:'28px',fontWeight:'600'}}>{selectedIndicator==='community_loss_score'?(hoveredData.community_loss_score*100).toFixed(1)+'%':formatRate(hoveredData[selectedIndicator])}</div>
+                    </div>
+                    <div style={{fontSize:'12px',opacity:0.6,marginBottom:'12px',letterSpacing:'1px'}}>ALL INDICATORS</div>
+                    <div style={{display:'flex',flexDirection:'column',gap:'8px'}}>
+                      {[{label:'Early Death',value:hoveredData.early_death_rate},{label:'Overdose',value:hoveredData.overdose_rate},{label:'Homicide',value:hoveredData.homicide_rate},{label:'Non-Fatal Shooting',value:hoveredData.non_fatal_rate},{label:'Hospitalization',value:hoveredData.hospital_rate},{label:'Foster Care',value:hoveredData.foster_rate}].map(item => (
+                        <div key={item.label} style={{display:'flex',justifyContent:'space-between',padding:'8px 12px',background:'rgba(255,255,255,0.05)',borderRadius:'4px',fontSize:'13px'}}>
+                          <span style={{opacity:0.7}}>{item.label}</span>
+                          <span style={{fontFamily:'monospace'}}>{formatRate(item.value)}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                ) : (
+                  <div style={{textAlign:'center',padding:'40px 0'}}>
+                    <div style={{fontSize:'48px',marginBottom:'16px',opacity:0.3}}>◉</div>
+                    <div style={{opacity:0.6}}>Hover over a ZIP code<br/>to explore the data</div>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div style={{marginTop:'32px',background:'rgba(0,0,0,0.3)',borderRadius:'12px',padding:'24px',border:'1px solid rgba(255,255,255,0.1)'}}>
+              <div style={{fontSize:'12px',opacity:0.6,letterSpacing:'2px',marginBottom:'16px'}}>HIGHEST COMMUNITY LOSS SCORES</div>
+              <div style={{display:'grid',gridTemplateColumns:'repeat(5,1fr)',gap:'16px'}}>
+                {lossData.slice(0,5).map((d,i) => (
+                  <div key={d.ZIP_CODE} style={{background:`linear-gradient(135deg,${getColor(d.community_loss_score)} 0%,rgba(0,0,0,0.5) 100%)`,padding:'20px',borderRadius:'8px',textAlign:'center'}}>
+                    <div style={{fontSize:'36px',fontWeight:'300',marginBottom:'4px'}}>#{i+1}</div>
+                    <div style={{fontSize:'18px',fontWeight:'600',marginBottom:'4px'}}>{d.neighborhood}</div>
+                    <div style={{fontSize:'13px',opacity:0.8,fontFamily:'monospace'}}>{d.ZIP_CODE}</div>
+                    <div style={{marginTop:'12px',fontSize:'24px',fontWeight:'600',color:'#fff'}}>{(d.community_loss_score*100).toFixed(0)}%</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div style={{marginTop:'32px',padding:'24px 0',borderTop:'1px solid rgba(255,255,255,0.1)',fontSize:'13px',opacity:0.6,lineHeight:1.8}}>
+              <strong>About:</strong> The Community Loss Index combines six indicators of community-level grief and trauma. Data: Philadelphia Dept. of Public Health, PA Dept. of Human Services (2023). Methodology: Albrecht & Abramovitz (2013).
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    ReactDOM.render(<App />, document.getElementById('root'));
+  </script>
+</body>
+</html>
